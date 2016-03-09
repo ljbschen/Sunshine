@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onClick(View v) {
                 //get location
-                toggleRefresh();
                 getJSONData(mLatitude, mLongitude);
             }
         });
@@ -147,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location services connected.");
-        toggleRefresh();
         getLocation();
     }
 
@@ -177,19 +175,29 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 LocationServices.FusedLocationApi.requestLocationUpdates
                         (mGoogleApiClient, mLocationRequest, this);
             } else {
+                toggleRefresh();
                 handleNewLocation(location);
             }
         }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        toggleRefresh();
+        Log.d(TAG, "new location got" + location.toString());
+        handleNewLocation(location);
     }
 
     private void handleNewLocation(Location location) {
         Log.d(TAG, "Current Location is " + location.toString());
         mLatitude = location.getLatitude();
         mLongitude = location.getLongitude();
+        toggleRefresh();
         getJSONData(mLatitude, mLongitude);
     }
 
     private void getJSONData(double latitude, double longitude) {
+        toggleRefresh();
         //set url
         String apiKey = "00e4ad0345969fa8b1a81de0646517a5";
         String url = "https://api.forecast.io/forecast/"
@@ -340,12 +348,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnectionSuspended(int i) {
 
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d(TAG, "new location got" + location.toString());
-        handleNewLocation(location);
     }
 
     @Override
