@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Forecast mForecast;
-    private double mLatitude = 37.8267;
-    private double mLongitude = -122.423;
+    private double mLatitude;// = 37.8267;
+    private double mLongitude;// = -122.423;
 
     @Bind(R.id.temperatureLabel) TextView mTemperatureLabel;
     @Bind(R.id.timeLabel) TextView mTimeLabel;
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //get the url and location
+        //get the location
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -94,13 +94,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .setInterval(10000)        // 10 seconds, in milliseconds
                 .setFastestInterval(1000); // 1 second, in milliseconds
 
-
-
-        getJSONData(mLatitude, mLongitude);
         mRefreshImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //get location
+                toggleRefresh();
                 getJSONData(mLatitude, mLongitude);
             }
         });
@@ -148,8 +146,52 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
-    private void getJSONData(double latitude, double longitude) {
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i(TAG, "Location services connected.");
         toggleRefresh();
+        getLocation();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                Toast.makeText(MainActivity.this,
+                        "Please allow the app to access your location",
+                        Toast.LENGTH_LONG).show();
+                onPause();
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
+            }
+        }
+        else {
+            Log.d(TAG, "Permission granted!");
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (location == null) {
+                Log.d(TAG, "No location can be returned on getLastLocation()");
+                LocationServices.FusedLocationApi.requestLocationUpdates
+                        (mGoogleApiClient, mLocationRequest, this);
+            } else {
+                handleNewLocation(location);
+            }
+        }
+    }
+
+    private void handleNewLocation(Location location) {
+        Log.d(TAG, "Current Location is " + location.toString());
+        mLatitude = location.getLatitude();
+        mLongitude = location.getLongitude();
+        getJSONData(mLatitude, mLongitude);
+    }
+
+    private void getJSONData(double latitude, double longitude) {
         //set url
         String apiKey = "00e4ad0345969fa8b1a81de0646517a5";
         String url = "https://api.forecast.io/forecast/"
@@ -230,6 +272,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mRainLabel.setText(currentWeather.getRain() + "%");
         mSummaryLabel.setText(currentWeather.getSummary());
         mIconImageView.setImageResource(currentWeather.getIconId());
+        Toast.makeText(MainActivity.this, mLatitude+" "+mLongitude, Toast.LENGTH_LONG).show();
     }
 
     private Forecast getForecast(String jsonData) throws JSONException {
@@ -297,49 +340,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Location services connected.");
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                Toast.makeText(MainActivity.this,
-                        "Please allow the app to access your location",
-                        Toast.LENGTH_LONG).show();
-                onPause();
-            } else {
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
-            }
-        }
-        else {
-            Log.d(TAG, "Permission granted!");
-            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (location == null) {
-                Log.d(TAG, "No location can be returned on getLastLocation()");
-                LocationServices.FusedLocationApi.requestLocationUpdates
-                        (mGoogleApiClient, mLocationRequest, this);
-            } else {
-                Log.d(TAG, "location is " +location.toString());
-                handleNewLocation(location);
-            }
-        }
-
-    }
-
-    @Override
     public void onConnectionSuspended(int i) {
 
     }
@@ -363,11 +363,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Log.i(TAG, "Location services connection failed with code " +
                     connectionResult.getErrorCode());
         }
-    }
-
-    private void handleNewLocation(Location location) {
-        Log.d(TAG, "Current Location is " + location.toString());
-        mLatitude = location.getLatitude();
-        mLongitude = location.getLongitude();
     }
 }
