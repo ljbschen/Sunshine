@@ -132,7 +132,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                             Manifest.permission.ACCESS_COARSE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
         }
-        mGoogleApiClient.connect();
+        if (!mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.connect();
+        }
     }
 
     @Override
@@ -385,14 +387,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 return "";
             }
         }catch (IOException e) {
-            e.toString();
             return "";
         }
     }
 
     private static void populateStates() {
         if (mStateMap == null) {
-            mStateMap = new HashMap<String, String>();
+            mStateMap = new HashMap<>();
             mStateMap.put("Alabama", "AL");
             mStateMap.put("Alaska", "AK");
             mStateMap.put("Alberta", "AB");

@@ -51,6 +51,5 @@ public class DailyActivity extends Activity {
                 Toast.makeText(parent.getContext(), msg, Toast.LENGTH_LONG).show();
             }
         });
-
     }
 }

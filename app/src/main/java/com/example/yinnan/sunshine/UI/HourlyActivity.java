@@ -35,7 +35,5 @@ public class HourlyActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(new HourlyAdapter(this, mHours));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
-
-
     }
 }
