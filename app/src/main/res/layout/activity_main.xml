@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.MainActivity"
+    android:background="@drawable/bg_gradient">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="__"
+        android:id="@+id/temperatureLabel"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFFFF"
+        android:textSize="150sp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/degreeImageView"
+        android:paddingTop="40dp"
+        android:layout_alignTop="@+id/temperatureLabel"
+        android:layout_toRightOf="@+id/temperatureLabel"
+        android:layout_toEndOf="@+id/temperatureLabel"
+        android:src="@drawable/degree"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="At 9:00 AM it will be"
+        android:id="@+id/timeLabel"
+        android:layout_above="@+id/temperatureLabel"
+        android:layout_centerHorizontal="true"
+        android:textColor="#80ffffff"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="San Jose, CA"
+        android:textColor="#ffffffff"
+        android:textSize="25sp"
+        android:id="@+id/locationLabel"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iconImageView"
+        android:layout_toLeftOf="@+id/locationLabel"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/cloudy"
+        android:layout_alignBottom="@+id/locationLabel"
+        android:adjustViewBounds="true"
+        android:background="#00ffffff"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/temperatureLabel"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearH">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#80ffffff"
+                android:text="HUMIDITY"
+                android:id="@+id/humidity"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="__"
+                android:textColor="#ffffffff"
+                android:id="@+id/humidityLabel"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RAIN%"
+                android:textColor="#80FFFFFF"
+                android:id="@+id/rain"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="__"
+                android:textColor="#ffffffff"
+                android:id="@+id/rainLabel"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Overcast"
+        android:id="@+id/summaryLabel"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/linearH"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:id="@+id/refreshImageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/refresh"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:visibility="invisible"
+        android:id="@+id/progressBar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/refreshImageView"
+        android:layout_alignLeft="@+id/refreshImageView"
+        android:layout_alignBottom="@+id/refreshImageView"
+        android:layout_alignRight="@+id/refreshImageView"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hourly"
+            android:textColor="#ffffffff"
+            android:id="@+id/hourlyButton"
+            android:layout_marginRight="5dp"
+            android:background="#40ffffff"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Daily"
+            android:textColor="#ffffffff"
+            android:id="@+id/dailyButton"
+            android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:background="#40ffffff"/>
+    </LinearLayout>
+
+</RelativeLayout>

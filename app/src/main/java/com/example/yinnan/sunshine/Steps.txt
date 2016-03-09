@@ -1,0 +1,30 @@
+1. set url and http client (getJSONData())
+2. in onResponse method, create new forecast object to hold all weather objects;
+    2.1 forecast contains current, day[], hour[]   (getForecast())
+    2.2 getter & setter                            (getCurrentWeather(), etc)
+3. Handle constructor from MainActivity
+    3.1 get json data
+    3.2 use setter of forecast to set fields in forecast, implement 3 fields
+        3.2.1 use setter of current/hour/day to set fields
+        3.2.2 current: modify return values, formattedTime, temperature, percent, IconId
+        3.2.3 day: create day[] to hold all days    (DailyActivity)
+                   send day[] to new activity parcelables
+                   create new xml layout file for day activity      (activity_daily.xml)
+                   @android:id/empty  &  @android:id/list
+                   receive data from main activity by using parcelables
+                   set list adapter extends BaseAdapter             (DailyAdapter)
+                   create new xml layout for each item in the list  (daily_list_item.xml)
+                   getView() create a view that holds each item in the list
+        3.2.4 hour:create hour[] to hold all hours   (HourlyActivity)
+                   send hour[] to new activity parcelables
+                   new xml for RecyclerView                         (activity_hourly.xml)
+                   <android.support.v7.widget.RecyclerView
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:id="@+id/recycleView"/>
+
+
+
+4. Update UI from current thread using runOnUIThread()
+    4.1 set fields by retrieving data from objects
+

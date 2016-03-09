@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:background = "@drawable/bg_gradient">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/iconImageView"
+            android:src="@drawable/sleet"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/iconImageView"
+            android:text="9 AM"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:id="@+id/timeLabel"
+            android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="100"
+        android:layout_marginRight="20dp"
+        android:id="@+id/temperatureLabel"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="#ffffff"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="summary"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:id="@+id/summaryLabel"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/timeLabel"
+        android:layout_toLeftOf="@+id/temperatureLabel"/>
+
+</RelativeLayout>
