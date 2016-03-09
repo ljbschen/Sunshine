@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public final static String DAY_TAG = "daily";
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     public final static int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 1;
+    private static HashMap<String, String> mStateMap;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Forecast mForecast;
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        populateStates();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -371,10 +374,87 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
         try {
             Address address = geocoder.getFromLocation(mLatitude, mLongitude, 1).get(0);
-            return address.getLocality()+ ", " + address.getAdminArea();
+            return address.getLocality()+ ", " + mStateMap.get(address.getAdminArea());
         }catch (IOException e) {
             e.toString();
             return "";
+        }
+    }
+
+    private static void populateStates() {
+        if (mStateMap == null) {
+            mStateMap = new HashMap<String, String>();
+            mStateMap.put("Alabama", "AL");
+            mStateMap.put("Alaska", "AK");
+            mStateMap.put("Alberta", "AB");
+            mStateMap.put("American Samoa", "AS");
+            mStateMap.put("Arizona", "AZ");
+            mStateMap.put("Arkansas", "AR");
+            mStateMap.put("Armed Forces (AE)", "AE");
+            mStateMap.put("Armed Forces Americas", "AA");
+            mStateMap.put("Armed Forces Pacific", "AP");
+            mStateMap.put("British Columbia", "BC");
+            mStateMap.put("California", "CA");
+            mStateMap.put("Colorado", "CO");
+            mStateMap.put("Connecticut", "CT");
+            mStateMap.put("Delaware", "DE");
+            mStateMap.put("District Of Columbia", "DC");
+            mStateMap.put("Florida", "FL");
+            mStateMap.put("Georgia", "GA");
+            mStateMap.put("Guam", "GU");
+            mStateMap.put("Hawaii", "HI");
+            mStateMap.put("Idaho", "ID");
+            mStateMap.put("Illinois", "IL");
+            mStateMap.put("Indiana", "IN");
+            mStateMap.put("Iowa", "IA");
+            mStateMap.put("Kansas", "KS");
+            mStateMap.put("Kentucky", "KY");
+            mStateMap.put("Louisiana", "LA");
+            mStateMap.put("Maine", "ME");
+            mStateMap.put("Manitoba", "MB");
+            mStateMap.put("Maryland", "MD");
+            mStateMap.put("Massachusetts", "MA");
+            mStateMap.put("Michigan", "MI");
+            mStateMap.put("Minnesota", "MN");
+            mStateMap.put("Mississippi", "MS");
+            mStateMap.put("Missouri", "MO");
+            mStateMap.put("Montana", "MT");
+            mStateMap.put("Nebraska", "NE");
+            mStateMap.put("Nevada", "NV");
+            mStateMap.put("New Brunswick", "NB");
+            mStateMap.put("New Hampshire", "NH");
+            mStateMap.put("New Jersey", "NJ");
+            mStateMap.put("New Mexico", "NM");
+            mStateMap.put("New York", "NY");
+            mStateMap.put("Newfoundland", "NF");
+            mStateMap.put("North Carolina", "NC");
+            mStateMap.put("North Dakota", "ND");
+            mStateMap.put("Northwest Territories", "NT");
+            mStateMap.put("Nova Scotia", "NS");
+            mStateMap.put("Nunavut", "NU");
+            mStateMap.put("Ohio", "OH");
+            mStateMap.put("Oklahoma", "OK");
+            mStateMap.put("Ontario", "ON");
+            mStateMap.put("Oregon", "OR");
+            mStateMap.put("Pennsylvania", "PA");
+            mStateMap.put("Prince Edward Island", "PE");
+            mStateMap.put("Puerto Rico", "PR");
+            mStateMap.put("Quebec", "PQ");
+            mStateMap.put("Rhode Island", "RI");
+            mStateMap.put("Saskatchewan", "SK");
+            mStateMap.put("South Carolina", "SC");
+            mStateMap.put("South Dakota", "SD");
+            mStateMap.put("Tennessee", "TN");
+            mStateMap.put("Texas", "TX");
+            mStateMap.put("Utah", "UT");
+            mStateMap.put("Vermont", "VT");
+            mStateMap.put("Virgin Islands", "VI");
+            mStateMap.put("Virginia", "VA");
+            mStateMap.put("Washington", "WA");
+            mStateMap.put("West Virginia", "WV");
+            mStateMap.put("Wisconsin", "WI");
+            mStateMap.put("Wyoming", "WY");
+            mStateMap.put("Yukon Territory", "YT");
         }
     }
 }

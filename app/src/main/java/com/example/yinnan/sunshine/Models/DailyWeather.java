@@ -15,21 +15,15 @@ public class DailyWeather implements Parcelable{
     private String mTimeZone;
     private String mLocation;
 
-    public String getLocation() {
-        return mLocation;
-    }
-
-    public void setLocation(String location) {
-        mLocation = location;
-    }
-
     public DailyWeather() {}
+
     protected DailyWeather(Parcel in) {
         mTemperature = in.readDouble();
         mTime = in.readLong();
         mSummary = in.readString();
         mIcon = in.readString();
         mTimeZone = in.readString();
+        mLocation = in.readString();
     }
 
     public static final Creator<DailyWeather> CREATOR = new Creator<DailyWeather>() {
@@ -44,6 +38,13 @@ public class DailyWeather implements Parcelable{
         }
     };
 
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+    }
     public int getTemperature() {
         return (int)Math.round(mTemperature);
     }
@@ -114,5 +115,6 @@ public class DailyWeather implements Parcelable{
         dest.writeString(mSummary);
         dest.writeString(mIcon);
         dest.writeString(mTimeZone);
+        dest.writeString(mLocation);
     }
 }

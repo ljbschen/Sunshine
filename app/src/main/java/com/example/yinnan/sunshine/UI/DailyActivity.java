@@ -37,7 +37,6 @@ public class DailyActivity extends Activity {
         mDays = Arrays.copyOf(parcelables, parcelables.length, DailyWeather[].class);
 
         mLocationLabel.setText(mDays[0].getLocation());
-
         //set list adapter
         mListView.setAdapter(new DailyAdapter(this, mDays));
         mListView.setEmptyView(mEmptyTextView);
