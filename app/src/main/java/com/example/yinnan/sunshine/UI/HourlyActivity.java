@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
 import com.example.yinnan.sunshine.Adapter.HourlyAdapter;
 import com.example.yinnan.sunshine.Models.HourlyWeather;
@@ -20,6 +21,7 @@ public class HourlyActivity extends AppCompatActivity {
     HourlyWeather[] mHours;
 
     @Bind(R.id.recycleView) RecyclerView mRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,5 +35,7 @@ public class HourlyActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(new HourlyAdapter(this, mHours));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
+
+
     }
 }

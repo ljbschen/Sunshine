@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,17 +31,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
     @Bind(R.id.dailyButton) Button mDailyButton;
     @Bind(R.id.hourlyButton) Button mHourlyButton;
+    @Bind(R.id.locationLabel) TextView mLocationLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         mRainLabel.setText(currentWeather.getRain() + "%");
         mSummaryLabel.setText(currentWeather.getSummary());
         mIconImageView.setImageResource(currentWeather.getIconId());
-        Toast.makeText(MainActivity.this, mLatitude+" "+mLongitude, Toast.LENGTH_LONG).show();
+        mLocationLabel.setText(currentWeather.getLocation());
     }
 
     private Forecast getForecast(String jsonData) throws JSONException {
@@ -292,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private DailyWeather[] getDailyWeather(String jsonData) throws JSONException {
         JSONObject forecast = new JSONObject(jsonData);
         String timezone = forecast.getString("timezone");
+        String location = getCity();
         JSONArray daysJSONArray = forecast.getJSONObject("daily").getJSONArray("data");
         DailyWeather[] days = new DailyWeather[daysJSONArray.length()];
         for (int i=0;i<daysJSONArray.length();i++) {
@@ -302,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             days[i].setSummary(day.getString("summary"));
             days[i].setIcon(day.getString("icon"));
             days[i].setTemperature(day.getDouble("temperatureMax"));
+            days[i].setLocation(location);
         }
         return days;
     }
@@ -326,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private CurrentWeather getCurrentWeather(String jsonData) throws JSONException {
         JSONObject forecast = new JSONObject(jsonData);
         CurrentWeather current = new CurrentWeather();
+        String location = getCity();
         current.setTimeZone(forecast.getString("timezone"));
         JSONObject currentlyData = forecast.getJSONObject("currently");
         current.setTime(currentlyData.getLong("time"));
@@ -334,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         current.setTemperature(currentlyData.getDouble("temperature"));
         current.setHumidity(currentlyData.getDouble("humidity"));
         current.setRain(currentlyData.getDouble("precipProbability"));
+        current.setLocation(location);
         return current;
     }
 
@@ -362,6 +364,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         } else {
             Log.i(TAG, "Location services connection failed with code " +
                     connectionResult.getErrorCode());
+        }
+    }
+
+    public String getCity() {
+        Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+        try {
+            Address address = geocoder.getFromLocation(mLatitude, mLongitude, 1).get(0);
+            return address.getLocality()+ ", " + address.getAdminArea();
+        }catch (IOException e) {
+            e.toString();
+            return "";
         }
     }
 }

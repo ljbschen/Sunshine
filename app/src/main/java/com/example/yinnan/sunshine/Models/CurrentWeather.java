@@ -8,6 +8,15 @@ public class CurrentWeather {
     private long mTime;
     private String mSummary;
     private String mIcon;
+    private String mLocation;
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+    }
 
     public int getRain() {
         return (int) Math.round(mRain*100);

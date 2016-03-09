@@ -13,6 +13,15 @@ public class DailyWeather implements Parcelable{
     private String mSummary;
     private String mIcon;
     private String mTimeZone;
+    private String mLocation;
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String location) {
+        mLocation = location;
+    }
 
     public DailyWeather() {}
     protected DailyWeather(Parcel in) {

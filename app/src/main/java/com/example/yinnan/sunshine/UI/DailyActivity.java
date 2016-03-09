@@ -24,6 +24,7 @@ public class DailyActivity extends Activity {
     DailyWeather[] mDays;
     @Bind(android.R.id.list) ListView mListView;
     @Bind(android.R.id.empty) TextView mEmptyTextView;
+    @Bind(R.id.locationLabel) TextView mLocationLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,8 @@ public class DailyActivity extends Activity {
         Intent intent = getIntent();
         Parcelable[] parcelables = intent.getParcelableArrayExtra(MainActivity.DAY_TAG);
         mDays = Arrays.copyOf(parcelables, parcelables.length, DailyWeather[].class);
+
+        mLocationLabel.setText(mDays[0].getLocation());
 
         //set list adapter
         mListView.setAdapter(new DailyAdapter(this, mDays));
