@@ -373,8 +373,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public String getCity() {
         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
         try {
-            Address address = geocoder.getFromLocation(mLatitude, mLongitude, 1).get(0);
-            return address.getLocality()+ ", " + mStateMap.get(address.getAdminArea());
+            if (geocoder.getFromLocation(mLatitude, mLongitude, 1).size()>0) {
+                Address address = geocoder.getFromLocation(mLatitude, mLongitude, 1).get(0);
+                String state = address.getAdminArea();
+                if (mStateMap.containsKey(address.getAdminArea())) {
+                    state = mStateMap.get(address.getAdminArea());
+                }
+                return address.getLocality() + ", " + state;
+            }
+            else {
+                return "";
+            }
         }catch (IOException e) {
             e.toString();
             return "";
