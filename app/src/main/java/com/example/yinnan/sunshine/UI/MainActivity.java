@@ -123,13 +123,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onResume() {
         super.onResume();
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION},
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
         }
         if (!mGoogleApiClient.isConnected()) {
@@ -154,9 +152,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
+                != PackageManager.PERMISSION_GRANTED ) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
                 Toast.makeText(MainActivity.this,
@@ -165,22 +161,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 onPause();
             } else {
                 ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
             }
         }
         else {
             Log.d(TAG, "Permission granted!");
-            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (location == null) {
-                Log.d(TAG, "No location can be returned on getLastLocation()");
+            //Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            //if (location == null) {
+                //Log.d(TAG, "No location can be returned on getLastLocation()");
+                Toast.makeText(this, "No Location detected.", Toast.LENGTH_LONG).show();
                 LocationServices.FusedLocationApi.requestLocationUpdates
                         (mGoogleApiClient, mLocationRequest, this);
-            } else {
-                toggleRefresh();
-                handleNewLocation(location);
-            }
+            //} else {
+            //    toggleRefresh();
+            //    handleNewLocation(location);
+            //}
         }
     }
 
